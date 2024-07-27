@@ -13,9 +13,15 @@ const fastify = Fastify({
   },
 });
 
+const consumers = new Map<number, Worker>();
+
 async function start() {
-  fastify.get('/', async function handler(request, reply) {
-    return { hello: 'world' };
+  fastify.get('/consumers', async (request, reply) => {
+    reply.status(200).send(
+      Array.from(consumers.keys()).map((id) => ({
+        id,
+      })),
+    );
   });
 
   fastify.post('/consumers', async (request, reply) => {
@@ -27,7 +33,21 @@ async function start() {
     worker.on('exit', (code) =>
       fastify.log.info(`Worker exited with code ${code}.`),
     );
-    reply.status(200).send();
+    consumers.set(worker.threadId, worker);
+
+    reply.status(201).send({ id: worker.threadId });
+  });
+
+  fastify.delete('/consumers', async (request, reply) => {
+    const result = await Promise.all(
+      Array.from(consumers.entries()).map(async ([id, worker]) => {
+        const statusCode = await worker.terminate();
+        return { id, statusCode };
+      }),
+    );
+    consumers.clear();
+
+    reply.status(200).send(result);
   });
 
   try {
