@@ -1,9 +1,9 @@
 import Fastify from 'fastify';
-import { setupConsumersApi, startConsumer } from './api/consumers';
-import { setupMessagesApi } from './api/messages';
-import { setupAdminApis } from './api/admin';
+import { setupConsumersApi, startConsumer } from './routes/consumers';
+import { setupMessagesApi } from './routes/messages';
+import { setupAdminApis } from './routes/admin';
 import { FastifySSEPlugin } from 'fastify-sse-v2';
-import { setupServerSideEventsApi } from './api/server-side-events';
+import { setupServerSideEventsApi } from './routes/server-side-events';
 
 const fastify = Fastify({
   logger: {
