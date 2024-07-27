@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "tsnd --respawn src/index.ts"
+    "start": "tsnd --respawn --watch=src src/index.ts"
   },
   "author": "",
   "license": "ISC",

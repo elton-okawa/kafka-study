@@ -1,4 +1,6 @@
 import Fastify from 'fastify';
+import { Worker } from 'worker_threads';
+
 const fastify = Fastify({
   logger: {
     transport: {
@@ -11,9 +13,21 @@ const fastify = Fastify({
   },
 });
 
-async function main() {
+async function start() {
   fastify.get('/', async function handler(request, reply) {
     return { hello: 'world' };
+  });
+
+  fastify.post('/consumers', async (request, reply) => {
+    const worker = new Worker(__dirname + '/consumer.ts');
+    worker.on('message', (msg) =>
+      fastify.log.info(`Worker message received: ${msg}`),
+    );
+    worker.on('error', (err) => fastify.log.error(err));
+    worker.on('exit', (code) =>
+      fastify.log.info(`Worker exited with code ${code}.`),
+    );
+    reply.status(200).send();
   });
 
   try {
@@ -24,4 +38,4 @@ async function main() {
   }
 }
 
-main();
+start();
