@@ -15,7 +15,7 @@ async function start() {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      logInParent(message.value?.toString());
+      logInParent(`[partition-${partition}] ${message.value?.toString()}`);
     },
   });
 }
