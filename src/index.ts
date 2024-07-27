@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
-import { setupConsumersApi } from './api/consumer';
+import { setupConsumersApi } from './api/consumers';
+import { setupMessagesApi } from './api/messages';
 
 const fastify = Fastify({
   logger: {
@@ -11,10 +12,12 @@ const fastify = Fastify({
       },
     },
   },
+  disableRequestLogging: true,
 });
 
 async function start() {
   setupConsumersApi(fastify);
+  await setupMessagesApi(fastify);
 
   try {
     await fastify.listen({ port: 3000 });
