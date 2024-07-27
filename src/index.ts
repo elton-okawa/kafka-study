@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { setupConsumersApi } from './api/consumers';
+import { setupConsumersApi, startConsumer } from './api/consumers';
 import { setupMessagesApi } from './api/messages';
 
 const fastify = Fastify({
@@ -21,6 +21,7 @@ async function start() {
 
   try {
     await fastify.listen({ port: 3000 });
+    startConsumer(fastify);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
