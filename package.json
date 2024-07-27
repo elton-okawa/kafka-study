@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "tsnd --respawn --watch=src src/index.ts"
+    "start": "dotenvx run -- tsnd --respawn --watch=src src/index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +16,9 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.6.4",
     "fastify": "^4.28.1",
+    "kafkajs": "^2.2.4",
     "pino-pretty": "^11.2.2"
   }
 }

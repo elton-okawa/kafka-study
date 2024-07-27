@@ -12,7 +12,3 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-    command: >
-      sh -c
-      "((sleep 15 && /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic $TOPIC_NAME --partitions $NUMBER_OF_PARTITIONS --bootstrap-server kafka:9092 && echo 'topic $TOPIC_NAME was created') &)
-      && /opt/bitnami/scripts/kafka/run.sh"
