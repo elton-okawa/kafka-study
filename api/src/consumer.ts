@@ -1,6 +1,7 @@
 import { parentPort, workerData } from 'worker_threads';
 import { getKafkaInstance } from './helpers/kafka';
 import { Commands } from './helpers/commands';
+import { Log } from './models/log';
 
 const kafka = getKafkaInstance(logInParent);
 const consumer = kafka.consumer({
@@ -15,20 +16,28 @@ async function start() {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      logInParent(`[partition-${partition}] ${message.value?.toString()}`);
+      logInfoInParent(`[partition-${partition}] ${message.value?.toString()}`);
     },
   });
 }
 
-function logInParent(message: string | undefined) {
-  parentPort?.postMessage(message?.toString());
+function logInfoInParent(message: string) {
+  logInParent({
+    level: 'info',
+    message,
+    timestamp: new Date().toISOString(),
+  });
+}
+
+function logInParent(message: Log | undefined) {
+  parentPort?.postMessage(message);
 }
 
 async function gracefulShutdown() {
-  logInParent('Disconnecting from kafka...');
+  logInfoInParent('Disconnecting from kafka...');
   await consumer.disconnect();
 
-  logInParent('Disconnected');
+  logInfoInParent('Disconnected');
   process.exit();
 }
 

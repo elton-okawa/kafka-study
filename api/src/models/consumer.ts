@@ -2,6 +2,7 @@ import { Worker } from 'worker_threads';
 import { Commands } from '../helpers/commands';
 import { FastifyBaseLogger } from 'fastify';
 import { EventEmitter } from 'stream';
+import { Log } from './log';
 
 let counter = 0;
 
@@ -9,7 +10,7 @@ export class Consumer {
   static UPDATED_EVENT = 'updated';
 
   private _worker: Worker;
-  private _messages: string[] = [];
+  private _messages: Log[] = [];
   private _name: string;
   private _emitter: EventEmitter;
 
@@ -19,6 +20,10 @@ export class Consumer {
 
   get status() {
     return { name: this._name, messages: this._messages };
+  }
+
+  get messages() {
+    return this._messages;
   }
 
   get emitter() {
@@ -36,20 +41,40 @@ export class Consumer {
   }
 
   private listen() {
-    this._worker.on('message', (msg) => {
-      const fullMessage = `[${this._name}]: ${msg}`;
-      this._logger.info(fullMessage);
-      this.addMessage(fullMessage);
+    this._worker.on('message', (log: Log) => {
+      (this._logger as any)[log.level](`[${this._name}]: ${log.message}`);
+      this.addMessage({ ...log, origin: this._name });
     });
-    this._worker.on('error', (err) =>
-      this._logger.error(`[${this._name}]`, err),
-    );
-    this._worker.on('exit', (code) =>
-      this._logger.info(`[${this._name}] Exited with code ${code}.`),
-    );
+    this._worker.on('error', (err) => {
+      this._logger.error(`[${this._name}]`, err);
+      this.addErrorMessage(err?.message ?? err);
+    });
+    this._worker.on('exit', (code) => {
+      const content = `Exited with code ${code}.`;
+      this._logger.info(`[${this._name}] ${content}`);
+      this.addInfoMessage(content);
+    });
   }
 
-  addMessage(message: string) {
+  private addInfoMessage(content: string) {
+    this.addMessage({
+      message: content,
+      timestamp: new Date().toISOString(),
+      level: 'info',
+      origin: this._name,
+    });
+  }
+
+  private addErrorMessage(content: string) {
+    this.addMessage({
+      message: content,
+      timestamp: new Date().toISOString(),
+      level: 'error',
+      origin: this._name,
+    });
+  }
+
+  private addMessage(message: Log) {
     this._messages.push(message);
     this._emitter.emit(Consumer.UPDATED_EVENT);
   }

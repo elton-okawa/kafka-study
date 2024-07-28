@@ -6,7 +6,7 @@ import { consumers } from '../data/consumers';
 export function startConsumer(fastify: FastifyInstance) {
   const consumer = new Consumer(fastify.log);
   consumer.emitter.on(Consumer.UPDATED_EVENT, () => {
-    sendToClient(consumers.status);
+    sendToClient(consumers.messages);
   });
   consumers.set(consumer.name, consumer);
 

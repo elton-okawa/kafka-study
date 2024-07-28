@@ -11,6 +11,12 @@ export class Consumers {
     return Array.from(this._refs.values()).map((consumer) => consumer.status);
   }
 
+  get messages() {
+    return Array.from(this._refs.values())
+      .flatMap((consumer) => consumer.messages)
+      .sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
+  }
+
   constructor() {
     this._refs = new Map();
   }

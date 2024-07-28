@@ -1,6 +1,5 @@
 <main *ngIf="consumers$ | async as consumers">
-  <div *ngFor="let data of parseConsumerData(consumers.data)">
-    <p>{{ data.name }}</p>
-    <p>{{ data.messages }}</p>
+  <div *ngFor="let log of parseLogs(consumers.data)">
+    <p>{{ log | json }}</p>
   </div>
 </main>

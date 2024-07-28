@@ -4,9 +4,16 @@ import { AppService } from './app.service';
 import { Observable, SubscriptionLike } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
-type ConsumerData = {
-  name: string;
-  messages: string[];
+export enum LogLevel {
+  INFO = 'info',
+  ERROR = 'error',
+}
+
+export type Log = {
+  level: LogLevel;
+  timestamp: string;
+  message: string;
+  origin: string;
 };
 
 @Component({
@@ -30,7 +37,7 @@ export class AppComponent implements OnDestroy {
     );
   }
 
-  parseConsumerData(data: string): ConsumerData[] {
+  parseLogs(data: string): Log[] {
     return JSON.parse(data);
   }
 
