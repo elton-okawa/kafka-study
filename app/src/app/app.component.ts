@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { Observable, SubscriptionLike, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FilterComponent, LogFilter } from './filter/filter.component';
-import { ConsumersData } from '../api/models';
+import { ConsumersData, Log } from '../api/models';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,11 @@ import { ConsumersData } from '../api/models';
 export class AppComponent implements OnDestroy {
   consumers$: Observable<MessageEvent<ConsumersData>>;
 
+  private filter: LogFilter = {
+    levels: [],
+    origins: [],
+  };
+
   constructor(private appService: AppService) {
     const url = 'http://localhost:3000/listen';
     const eventNames = ['consumers'];
@@ -26,7 +31,17 @@ export class AppComponent implements OnDestroy {
   }
 
   onFilterChanged(filter: LogFilter) {
-    console.log(filter);
+    this.filter = filter;
+  }
+
+  filterLogs(logs: Log[]) {
+    return logs.filter(
+      (log) =>
+        (!this.filter.levels.length ||
+          this.filter.levels.includes(log.level)) &&
+        (!this.filter.origins.length ||
+          this.filter.origins.includes(log.origin))
+    );
   }
 
   getOrigins(data: ConsumersData) {

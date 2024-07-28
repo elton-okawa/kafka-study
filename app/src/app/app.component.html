@@ -4,7 +4,7 @@
     [consumers]="consumers.data.status"
   />
   <p>{{ getOrigins(consumers.data) | json }}</p>
-  <div *ngFor="let log of consumers.data.logs">
+  <div *ngFor="let log of filterLogs(consumers.data.logs)">
     <p>{{ log | json }}</p>
   </div>
 </main>
