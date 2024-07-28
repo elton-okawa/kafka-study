@@ -37,10 +37,10 @@ export class Consumers {
   }
 
   stopAll() {
-    return Array.from(this._refs.entries()).map(([id, consumer]) => {
-      consumer?.close();
-
-      return { id };
-    });
+    for (const consumer of this._refs.values()) {
+      if (consumer.status.active) {
+        consumer?.close();
+      }
+    }
   }
 }

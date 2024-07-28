@@ -58,6 +58,7 @@ export class Consumer {
       const content = `Exited with code ${code}.`;
       this._logger.info(`[${this._name}] ${content}`);
       this.addInfoMessage(content);
+      this._emitter.removeAllListeners();
     });
   }
 
@@ -89,6 +90,5 @@ export class Consumer {
     this._isActive = false;
 
     this._emitter.emit(Consumer.UPDATED_EVENT);
-    this._emitter.removeAllListeners();
   }
 }
