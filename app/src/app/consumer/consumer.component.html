@@ -1,6 +1,13 @@
-<div>
-  <button (click)="startConsumer()">Start consumer</button>
-  <button (click)="stopAllConsumers()">Stop all consumers</button>
-  <button (click)="clearAllData()">Clear all</button>
+<h1>Consumers</h1>
+<div class="button-container">
+  <button (click)="startConsumer()" class="button button-primary">Add</button>
+  <button (click)="stopAllConsumers()" class="button button-outline-error">
+    Stop all
+  </button>
+  <button (click)="clearAllData()" class="button button-outline-warning">
+    Clear all
+  </button>
 </div>
-<app-consumer-item *ngFor="let consumer of consumers" [consumer]="consumer" />
+<div class="item-container">
+  <app-consumer-item *ngFor="let consumer of consumers" [consumer]="consumer" />
+</div>

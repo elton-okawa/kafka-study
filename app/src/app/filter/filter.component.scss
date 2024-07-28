@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.group-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-container {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}

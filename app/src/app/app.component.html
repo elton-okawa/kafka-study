@@ -1,12 +1,15 @@
-<main *ngIf="consumers$ | async as consumers">
-  <app-consumer [consumers]="consumers.data.status" />
-  <app-message />
-  <app-filter
-    (filterEvent)="onFilterChanged($event)"
-    [consumers]="consumers.data.status"
-  />
-  <p>{{ getOrigins(consumers.data) | json }}</p>
-  <div *ngFor="let log of filterLogs(consumers.data.logs)">
-    <p>{{ log | json }}</p>
-  </div>
+<main *ngIf="consumers$ | async as consumers" class="container">
+  <section name="controls" class="controls">
+    <app-consumer [consumers]="consumers.data.status" />
+    <app-message />
+    <app-filter
+      (filterEvent)="onFilterChanged($event)"
+      [consumers]="consumers.data.status"
+    />
+  </section>
+  <section name="logs" class="logs">
+    <div *ngFor="let log of filterLogs(consumers.data.logs)">
+      <p>{{ log | json }}</p>
+    </div>
+  </section>
 </main>

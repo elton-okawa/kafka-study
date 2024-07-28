@@ -1,1 +1,76 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+}
+
+button {
+  font-family: inherit;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+ul {
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
+.button {
+  border: none;
+  background-color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.button-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.button-primary:hover {
+  background: #60a5fa;
+}
+
+.button-outline-primary {
+  border: solid 1px #3b82f6;
+  color: #3b82f6;
+}
+
+.button-outline-primary:hover {
+  border: solid 1px #60a5fa;
+  color: #60a5fa;
+}
+
+.button-outline-warning {
+  border: solid 1px #fbbf24;
+  color: #fbbf24;
+}
+
+.button-outline-warning:hover {
+  border: solid 1px #fcd34d;
+  color: #fcd34d;
+}
+
+.button-outline-error {
+  border: solid 1px #dc2626;
+  color: #dc2626;
+}
+
+.button-outline-error:hover {
+  border: solid 1px #f87171;
+  color: #f87171;
+}
+
+.button-outline-error:disabled {
+  border: solid 1px #fca5a5;
+  color: #fca5a5;
+  cursor: not-allowed;
+}

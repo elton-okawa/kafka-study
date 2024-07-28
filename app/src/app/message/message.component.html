@@ -1,7 +1,12 @@
-<form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label of="key">Key</label>
-  <input id="key" formControlName="key" />
-  <label of="value">Value</label>
-  <input id="value" formControlName="value" />
-  <button type="submit">Send</button>
-</form>
+<section name="post-message" class="container">
+  <h1>Post a message</h1>
+  <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label of="key">Key</label>
+    <input id="key" formControlName="key" />
+    <label of="value">Value</label>
+    <input id="value" formControlName="value" />
+    <button type="submit" class="button button-outline-primary submit-button">
+      Send
+    </button>
+  </form>
+</section>

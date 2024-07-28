@@ -1,6 +1,10 @@
-<div class="consumer">
+<div class="container">
   <p>{{ consumer.name }}</p>
-  <button [disabled]="!consumer.active || loading" (click)="onStop()">
+  <button
+    [disabled]="!consumer.active || loading"
+    (click)="onStop()"
+    class="button button-outline-error"
+  >
     Stop
   </button>
 </div>

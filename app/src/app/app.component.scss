@@ -1,0 +1,23 @@
+.container {
+  max-width: 1280px;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 300px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.logs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}

@@ -1,29 +1,41 @@
-<form [formGroup]="filters" (change)="onFilterChange()">
-  <div formGroupName="levels">
-    <p>Levels</p>
-    <div *ngFor="let level of availableLevels; let i = index">
-      <input
-        id="level-{{ level }}"
-        type="checkbox"
-        [formControlName]="level"
-        checked="{{ level[i] }}"
-      />
-      <label for="level-{{ level }}">{{ level }}</label>
+<section name="filters" class="container">
+  <h1>Filters</h1>
+  <form
+    [formGroup]="filters"
+    (change)="onFilterChange()"
+    class="group-container"
+  >
+    <div formGroupName="levels" class="group-container">
+      <p>Levels</p>
+      <div
+        *ngFor="let level of availableLevels; let i = index"
+        class="item-container"
+      >
+        <input
+          id="level-{{ level }}"
+          type="checkbox"
+          [formControlName]="level"
+          checked="{{ level[i] }}"
+        />
+        <label for="level-{{ level }}">{{ level }}</label>
+      </div>
     </div>
-  </div>
-  <div formGroupName="origins">
-    <p>Consumers</p>
-    <div *ngFor="let consumer of consumers; let i = index">
-      <input
-        id="origin-{{ consumer.name }}"
-        type="checkbox"
-        [formControlName]="consumer.name"
-        checked="{{ consumers[i].name }}"
-      />
-      <label for="origin-{{ consumer.name }}">{{
-        getOriginLabel(consumer)
-      }}</label>
+    <div formGroupName="origins" class="group-container">
+      <p>Consumers</p>
+      <div
+        *ngFor="let consumer of consumers; let i = index"
+        class="item-container"
+      >
+        <input
+          id="origin-{{ consumer.name }}"
+          type="checkbox"
+          [formControlName]="consumer.name"
+          checked="{{ consumers[i].name }}"
+        />
+        <label for="origin-{{ consumer.name }}">{{
+          getOriginLabel(consumer)
+        }}</label>
+      </div>
     </div>
-  </div>
-  <p>{{ filters.value | json }}</p>
-</form>
+  </form>
+</section>
