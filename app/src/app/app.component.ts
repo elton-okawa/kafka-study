@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { AppService } from './app.service';
 import { Observable, SubscriptionLike } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { FilterComponent } from './filter/filter.component';
 
 export enum LogLevel {
   INFO = 'info',
@@ -19,7 +20,7 @@ export type Log = {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, FilterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

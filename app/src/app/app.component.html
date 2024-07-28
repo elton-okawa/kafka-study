@@ -1,4 +1,5 @@
 <main *ngIf="consumers$ | async as consumers">
+  <app-filter />
   <div *ngFor="let log of parseLogs(consumers.data)">
     <p>{{ log | json }}</p>
   </div>

@@ -1,0 +1,14 @@
+<form [formGroup]="filters">
+  <div formGroupName="levels">
+    <div *ngFor="let level of availableLevels; let i = index">
+      <input
+        id="level-{{ level }}"
+        type="checkbox"
+        [formControlName]="level"
+        checked="{{ level[i] }}"
+      />
+      <label for="level-{{ level }}">{{ level }}</label>
+    </div>
+  </div>
+  <p>{{ filters.value.levels | json }}</p>
+</form>
