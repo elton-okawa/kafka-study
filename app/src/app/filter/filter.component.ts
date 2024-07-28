@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,7 +15,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 
-type LogFilter = {
+export type LogFilter = {
   levels: string[];
   origins: string[];
 };
@@ -19,22 +27,42 @@ type LogFilter = {
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss',
 })
-export class FilterComponent {
+export class FilterComponent implements OnInit {
+  @Input() origins: string[] = [];
   @Output() filterEvent = new EventEmitter<LogFilter>();
   availableLevels = ['info', 'error', 'warn'];
 
-  filters = this.formBuilder.group({
-    levels: this.formBuilder.group(
-      this.availableLevels.reduce((map, level) => {
-        map[level] = [false];
-        return map;
-      }, {} as Record<string, boolean[]>)
-    ),
-  });
+  filters!: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {}
 
-  levelsChanged(levels: string[]) {
-    console.log(levels);
+  ngOnInit(): void {
+    this.filters = this.formBuilder.group({
+      levels: this.formBuilder.group(
+        this.availableLevels.reduce((map, level) => {
+          map[level] = [false];
+          return map;
+        }, {} as Record<string, boolean[]>)
+      ),
+      origins: this.formBuilder.group(
+        this.origins.reduce((map, origin) => {
+          map[origin] = [false];
+          return map;
+        }, {} as Record<string, boolean[]>)
+      ),
+    });
+  }
+
+  onFilterChange() {
+    this.filterEvent.emit({
+      levels: this.getKeysWithTrue(this.filters.value.levels ?? {}),
+      origins: this.getKeysWithTrue(this.filters.value.origins ?? {}),
+    });
+  }
+
+  private getKeysWithTrue(obj: Record<string, boolean | null | undefined>) {
+    return Object.entries(obj)
+      .filter(([key, value]) => value)
+      .map(([level]) => level);
   }
 }

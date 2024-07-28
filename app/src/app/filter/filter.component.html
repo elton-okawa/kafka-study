@@ -1,5 +1,6 @@
-<form [formGroup]="filters">
+<form [formGroup]="filters" (change)="onFilterChange()">
   <div formGroupName="levels">
+    <p>Levels</p>
     <div *ngFor="let level of availableLevels; let i = index">
       <input
         id="level-{{ level }}"
@@ -10,5 +11,17 @@
       <label for="level-{{ level }}">{{ level }}</label>
     </div>
   </div>
-  <p>{{ filters.value.levels | json }}</p>
+  <div formGroupName="origins">
+    <p>Consumers</p>
+    <div *ngFor="let origin of origins; let i = index">
+      <input
+        id="origin-{{ origin }}"
+        type="checkbox"
+        [formControlName]="origin"
+        checked="{{ origin[i] }}"
+      />
+      <label for="origin-{{ origin }}">{{ origin }}</label>
+    </div>
+  </div>
+  <p>{{ filters.value | json }}</p>
 </form>
