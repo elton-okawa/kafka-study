@@ -10,20 +10,24 @@ export class Consumer {
   static UPDATED_EVENT = 'updated';
 
   private _worker: Worker;
-  private _messages: Log[] = [];
+  private _logs: Log[] = [];
   private _name: string;
   private _emitter: EventEmitter;
+  private _isActive: boolean;
 
   get name() {
     return this._name;
   }
 
   get status() {
-    return { name: this._name, messages: this._messages };
+    return {
+      name: this._name,
+      active: this._isActive,
+    };
   }
 
-  get messages() {
-    return this._messages;
+  get logs() {
+    return this._logs;
   }
 
   get emitter() {
@@ -36,6 +40,7 @@ export class Consumer {
       workerData: { topic: process.env.TOPIC_NAME },
     });
     this._name = `consumer-${counter++}`;
+    this._isActive = true;
 
     this.listen();
   }
@@ -75,12 +80,15 @@ export class Consumer {
   }
 
   private addMessage(message: Log) {
-    this._messages.push(message);
+    this._logs.push(message);
     this._emitter.emit(Consumer.UPDATED_EVENT);
   }
 
   close() {
     this._worker.postMessage({ type: Commands.Terminate });
+    this._isActive = false;
+
+    this._emitter.emit(Consumer.UPDATED_EVENT);
     this._emitter.removeAllListeners();
   }
 }

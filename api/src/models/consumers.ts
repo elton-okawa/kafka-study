@@ -8,13 +8,14 @@ export class Consumers {
   }
 
   get status() {
-    return Array.from(this._refs.values()).map((consumer) => consumer.status);
-  }
-
-  get messages() {
-    return Array.from(this._refs.values())
-      .flatMap((consumer) => consumer.messages)
-      .sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
+    return {
+      status: Array.from(this._refs.values()).map(
+        (consumer) => consumer.status,
+      ),
+      logs: Array.from(this._refs.values())
+        .flatMap((consumer) => consumer.logs)
+        .sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)),
+    };
   }
 
   constructor() {
@@ -29,14 +30,13 @@ export class Consumers {
     return this._refs.set(name, consumer);
   }
 
-  delete(name: string) {
+  stop(name: string) {
     const consumer = this._refs.get(name);
-    this._refs.delete(name);
 
     consumer?.close();
   }
 
-  async clear() {
+  stopAll() {
     return Array.from(this._refs.entries()).map(([id, consumer]) => {
       consumer?.close();
 

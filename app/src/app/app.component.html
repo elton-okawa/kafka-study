@@ -1,10 +1,10 @@
 <main *ngIf="consumers$ | async as consumers">
   <app-filter
     (filterEvent)="onFilterChanged($event)"
-    [origins]="getOrigins(consumers.data)"
+    [consumers]="consumers.data.status"
   />
   <p>{{ getOrigins(consumers.data) | json }}</p>
-  <div *ngFor="let log of consumers.data">
+  <div *ngFor="let log of consumers.data.logs">
     <p>{{ log | json }}</p>
   </div>
 </main>

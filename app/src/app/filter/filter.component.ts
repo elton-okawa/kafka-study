@@ -17,6 +17,7 @@ import {
 } from '@angular/forms';
 import { intersection, xor } from 'lodash';
 import { FilterService } from './filter.service';
+import { ConsumerStatus } from '../../api/models';
 
 export type LogFilter = {
   levels: string[];
@@ -31,13 +32,13 @@ export type LogFilter = {
   styleUrl: './filter.component.scss',
 })
 export class FilterComponent implements OnInit {
-  private _origins: string[] = [];
+  private _consumers: ConsumerStatus[] = [];
 
   @Input()
-  set origins(newOrigins: string[]) {
+  set consumers(newConsumers: ConsumerStatus[]) {
     const { removed, added } = this.filterService.getOriginDiff(
-      this._origins,
-      newOrigins
+      this._consumers.map((consumer) => consumer.name),
+      newConsumers.map((consumer) => consumer.name)
     );
 
     removed.forEach((origin) => {
@@ -48,8 +49,12 @@ export class FilterComponent implements OnInit {
       this.filters?.controls.origins.addControl(origin, new FormControl(false));
     });
 
-    this._origins = newOrigins;
+    this._consumers = newConsumers;
   }
+  get consumers() {
+    return this._consumers;
+  }
+
   @Output() filterEvent = new EventEmitter<LogFilter>();
   availableLevels = ['info', 'error', 'warn'];
 
@@ -67,7 +72,7 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
     this.filters = this.filterService.buildForm(
       this.availableLevels,
-      this._origins
+      this._consumers.map((consumer) => consumer.name)
     );
   }
 
@@ -80,5 +85,13 @@ export class FilterComponent implements OnInit {
         this.filters.value.origins ?? {}
       ),
     });
+  }
+
+  getOriginLabel(consumer: ConsumerStatus) {
+    if (consumer.active) {
+      return consumer.name;
+    }
+
+    return `${consumer.name} (stopped)`;
   }
 }

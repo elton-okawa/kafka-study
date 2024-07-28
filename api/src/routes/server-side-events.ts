@@ -15,6 +15,6 @@ export function setupServerSideEventsApi(fastify: FastifyInstance) {
     );
     request.socket.on('close', () => events.removeAllListeners());
 
-    reply.sse({ event: 'consumers', data: JSON.stringify(consumers.messages) });
+    reply.sse({ event: 'consumers', data: JSON.stringify(consumers.status) });
   });
 }

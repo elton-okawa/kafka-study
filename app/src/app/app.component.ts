@@ -4,18 +4,7 @@ import { AppService } from './app.service';
 import { Observable, SubscriptionLike, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FilterComponent, LogFilter } from './filter/filter.component';
-
-export enum LogLevel {
-  INFO = 'info',
-  ERROR = 'error',
-}
-
-export type Log = {
-  level: LogLevel;
-  timestamp: string;
-  message: string;
-  origin: string;
-};
+import { ConsumersData } from '../api/models';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +14,7 @@ export type Log = {
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnDestroy {
-  consumers$: Observable<MessageEvent<Log[]>>;
+  consumers$: Observable<MessageEvent<ConsumersData>>;
 
   constructor(private appService: AppService) {
     const url = 'http://localhost:3000/listen';
@@ -40,10 +29,8 @@ export class AppComponent implements OnDestroy {
     console.log(filter);
   }
 
-  getOrigins(data: Log[]) {
-    const set = new Set<string>();
-    data.map((log) => set.add(log.origin));
-    return Array.from(set.values());
+  getOrigins(data: ConsumersData) {
+    return data.status.map((status) => status.name);
   }
 
   ngOnDestroy() {

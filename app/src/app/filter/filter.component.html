@@ -13,14 +13,16 @@
   </div>
   <div formGroupName="origins">
     <p>Consumers</p>
-    <div *ngFor="let origin of filterOrigins; let i = index">
+    <div *ngFor="let consumer of consumers; let i = index">
       <input
-        id="origin-{{ origin }}"
+        id="origin-{{ consumer.name }}"
         type="checkbox"
-        [formControlName]="origin"
-        checked="{{ origin[i] }}"
+        [formControlName]="consumer.name"
+        checked="{{ consumers[i].name }}"
       />
-      <label for="origin-{{ origin }}">{{ origin }}</label>
+      <label for="origin-{{ consumer.name }}">{{
+        getOriginLabel(consumer)
+      }}</label>
     </div>
   </div>
   <p>{{ filters.value | json }}</p>

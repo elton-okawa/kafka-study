@@ -6,7 +6,7 @@ import { consumers } from '../data/consumers';
 export function startConsumer(fastify: FastifyInstance) {
   const consumer = new Consumer(fastify.log);
   consumer.emitter.on(Consumer.UPDATED_EVENT, () => {
-    sendToClient(consumers.messages);
+    sendToClient(consumers.status);
   });
   consumers.set(consumer.name, consumer);
 
@@ -25,7 +25,7 @@ export function setupConsumersApi(fastify: FastifyInstance) {
   });
 
   fastify.delete('/consumers', async (request, reply) => {
-    const result = await consumers.clear();
+    const result = await consumers.stopAll();
 
     reply.status(200).send(result);
   });
@@ -40,7 +40,7 @@ export function setupConsumersApi(fastify: FastifyInstance) {
           .send({ message: `Consumer '${name}' not found` });
       }
 
-      consumers.delete(name);
+      consumers.stop(name);
       reply.status(204).send();
     },
   );
