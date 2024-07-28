@@ -5,11 +5,12 @@ import { Observable, SubscriptionLike, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FilterComponent, LogFilter } from './filter/filter.component';
 import { ConsumersData, Log } from '../api/models';
+import { ConsumerComponent } from './consumer/consumer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FilterComponent],
+  imports: [RouterOutlet, CommonModule, FilterComponent, ConsumerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

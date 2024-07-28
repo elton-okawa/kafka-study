@@ -1,4 +1,10 @@
 <main *ngIf="consumers$ | async as consumers">
+  <div>
+    <app-consumer
+      *ngFor="let consumer of consumers.data.status"
+      [consumer]="consumer"
+    />
+  </div>
   <app-filter
     (filterEvent)="onFilterChanged($event)"
     [consumers]="consumers.data.status"
