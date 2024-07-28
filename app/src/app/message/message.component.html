@@ -1,0 +1,7 @@
+<form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label of="key">Key</label>
+  <input id="key" formControlName="key" />
+  <label of="value">Value</label>
+  <input id="value" formControlName="value" />
+  <button type="submit">Send</button>
+</form>

@@ -6,11 +6,18 @@ import { CommonModule } from '@angular/common';
 import { FilterComponent, LogFilter } from './filter/filter.component';
 import { ConsumersData, Log } from '../api/models';
 import { ConsumerComponent } from './consumer/consumer.component';
+import { MessageComponent } from './message/message.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FilterComponent, ConsumerComponent],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    FilterComponent,
+    ConsumerComponent,
+    MessageComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

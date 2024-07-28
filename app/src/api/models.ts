@@ -19,3 +19,8 @@ export type Log = {
   message: string;
   origin: string;
 };
+
+export type Message = {
+  key?: string;
+  value: string;
+};

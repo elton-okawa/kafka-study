@@ -1,6 +1,6 @@
 <main *ngIf="consumers$ | async as consumers">
   <app-consumer [consumers]="consumers.data.status" />
-
+  <app-message />
   <app-filter
     (filterEvent)="onFilterChanged($event)"
     [consumers]="consumers.data.status"
