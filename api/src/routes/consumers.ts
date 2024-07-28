@@ -1,11 +1,7 @@
 import { FastifyInstance } from 'fastify';
-import { Worker } from 'worker_threads';
-import { Commands } from '../helpers/commands';
 import { Consumer } from '../models/consumer';
 import { sendToClient } from './server-side-events';
-import { Consumers } from '../models/consumers';
-
-const consumers = new Consumers();
+import { consumers } from '../data/consumers';
 
 export function startConsumer(fastify: FastifyInstance) {
   const consumer = new Consumer(fastify.log);
