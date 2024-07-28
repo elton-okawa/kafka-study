@@ -43,4 +43,9 @@ export class Consumers {
       }
     }
   }
+
+  clearAll() {
+    this.stopAll();
+    this._refs.clear();
+  }
 }

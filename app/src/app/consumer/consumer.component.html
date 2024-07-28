@@ -1,2 +1,6 @@
-<app-add-consumer-button />
+<div>
+  <button (click)="startConsumer()">Start consumer</button>
+  <button (click)="stopAllConsumers()">Stop all consumers</button>
+  <button (click)="clearAllData()">Clear all</button>
+</div>
 <app-consumer-item *ngFor="let consumer of consumers" [consumer]="consumer" />

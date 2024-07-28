@@ -24,13 +24,19 @@ export function setupConsumersApi(fastify: FastifyInstance) {
     reply.status(201).send({ name });
   });
 
-  fastify.delete('/consumers', async (request, reply) => {
-    const result = await consumers.stopAll();
+  fastify.put<{ Body: { active: boolean } }>(
+    '/consumers',
+    async (request, reply) => {
+      if (!request.body.active) {
+        consumers.stopAll();
+      }
+      // TODO handle active true
 
-    reply.status(200).send(result);
-  });
+      reply.status(204).send();
+    },
+  );
 
-  fastify.delete<{ Params: { name: string } }>(
+  fastify.put<{ Params: { name: string }; Body: { active: boolean } }>(
     '/consumers/:name',
     async (request, reply) => {
       const name = request.params.name;
@@ -40,8 +46,18 @@ export function setupConsumersApi(fastify: FastifyInstance) {
           .send({ message: `Consumer '${name}' not found` });
       }
 
-      consumers.stop(name);
+      if (!request.body.active) {
+        consumers.stop(name);
+      }
+      // TODO handle active true
+
       reply.status(204).send();
     },
   );
+
+  fastify.delete('/consumers', async (request, reply) => {
+    consumers.clearAll();
+    sendToClient(consumers.status);
+    reply.status(204).send();
+  });
 }
