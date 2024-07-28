@@ -1,0 +1,12 @@
+{
+  "name": "kafka-study",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently -n=BACK,FRONT -c=green,blue \"cd api && npm run start\" \"cd app && npm run start\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

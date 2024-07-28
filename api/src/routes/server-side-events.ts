@@ -9,7 +9,9 @@ export function sendToClient(data: any) {
 
 export function setupServerSideEventsApi(fastify: FastifyInstance) {
   fastify.get('/listen', {}, (request, reply) => {
-    events.on('data', (data) => reply.sse({ data: JSON.stringify(data) }));
+    events.on('data', (data) =>
+      reply.sse({ event: 'consumers', data: JSON.stringify(data) }),
+    );
     request.socket.on('close', () => events.removeAllListeners());
   });
 }

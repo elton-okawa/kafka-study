@@ -4,6 +4,7 @@ import { setupMessagesApi } from './routes/messages';
 import { setupAdminApis } from './routes/admin';
 import { FastifySSEPlugin } from 'fastify-sse-v2';
 import { setupServerSideEventsApi } from './routes/server-side-events';
+import cors from '@fastify/cors';
 
 const fastify = Fastify({
   logger: {
@@ -17,9 +18,11 @@ const fastify = Fastify({
   },
   disableRequestLogging: true,
 });
-fastify.register(FastifySSEPlugin);
 
 async function start() {
+  fastify.register(FastifySSEPlugin);
+  await fastify.register(cors);
+
   setupConsumersApi(fastify);
   await setupMessagesApi(fastify);
   await setupAdminApis(fastify);
