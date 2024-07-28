@@ -16,6 +16,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { intersection, xor } from 'lodash';
+import { FilterService } from './filter.service';
 
 export type LogFilter = {
   levels: string[];
@@ -34,9 +35,10 @@ export class FilterComponent implements OnInit {
 
   @Input()
   set origins(newOrigins: string[]) {
-    const xorOldNew = xor(this._origins, newOrigins);
-    const removed = intersection(this._origins, xorOldNew);
-    const added = intersection(newOrigins, xorOldNew);
+    const { removed, added } = this.filterService.getOriginDiff(
+      this._origins,
+      newOrigins
+    );
 
     removed.forEach((origin) => {
       this.filters?.controls.origins.removeControl(origin);
@@ -60,39 +62,23 @@ export class FilterComponent implements OnInit {
     return Object.keys(this.filters.value.origins ?? {});
   }
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private filterService: FilterService) {}
 
   ngOnInit(): void {
-    this.filters = this.buildFiltersForm(this.availableLevels, this._origins);
-  }
-
-  private buildFiltersForm(levels: string[], origins: string[]) {
-    return this.formBuilder.group({
-      levels: this.formBuilder.record(
-        levels.reduce((map, level) => {
-          map[level] = [false];
-          return map;
-        }, {} as Record<string, boolean[]>)
-      ),
-      origins: this.formBuilder.record(
-        origins.reduce((map, origin) => {
-          map[origin] = [false];
-          return map;
-        }, {} as Record<string, boolean[]>)
-      ),
-    });
+    this.filters = this.filterService.buildForm(
+      this.availableLevels,
+      this._origins
+    );
   }
 
   onFilterChange() {
     this.filterEvent.emit({
-      levels: this.getKeysWithTrue(this.filters.value.levels ?? {}),
-      origins: this.getKeysWithTrue(this.filters.value.origins ?? {}),
+      levels: this.filterService.getKeysWithTrue(
+        this.filters.value.levels ?? {}
+      ),
+      origins: this.filterService.getKeysWithTrue(
+        this.filters.value.origins ?? {}
+      ),
     });
-  }
-
-  private getKeysWithTrue(obj: Record<string, boolean | null | undefined>) {
-    return Object.entries(obj)
-      .filter(([key, value]) => value)
-      .map(([level]) => level);
   }
 }
