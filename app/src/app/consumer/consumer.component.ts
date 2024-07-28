@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ConsumerStatus } from '../../api/models';
 import { ConsumerService } from './consumer.service';
+import { AddConsumerButtonComponent } from './add-consumer-button/add-consumer-button.component';
 
 @Component({
   selector: 'app-consumer',
   standalone: true,
-  imports: [],
+  imports: [AddConsumerButtonComponent],
   templateUrl: './consumer.component.html',
   styleUrl: './consumer.component.scss',
 })

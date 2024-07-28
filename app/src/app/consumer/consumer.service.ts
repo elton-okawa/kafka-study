@@ -10,4 +10,8 @@ export class ConsumerService {
   stop(name: string) {
     return this.http.delete(`/consumers/${name}`);
   }
+
+  add() {
+    return this.http.post('/consumers', {});
+  }
 }
