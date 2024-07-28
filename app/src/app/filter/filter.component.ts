@@ -12,8 +12,10 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  FormRecord,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { intersection, xor } from 'lodash';
 
 export type LogFilter = {
   levels: string[];
@@ -28,24 +30,52 @@ export type LogFilter = {
   styleUrl: './filter.component.scss',
 })
 export class FilterComponent implements OnInit {
-  @Input() origins: string[] = [];
+  private _origins: string[] = [];
+
+  @Input()
+  set origins(newOrigins: string[]) {
+    const xorOldNew = xor(this._origins, newOrigins);
+    const removed = intersection(this._origins, xorOldNew);
+    const added = intersection(newOrigins, xorOldNew);
+
+    removed.forEach((origin) => {
+      this.filters?.controls.origins.removeControl(origin);
+    });
+
+    added.forEach((origin) => {
+      this.filters?.controls.origins.addControl(origin, new FormControl(false));
+    });
+
+    this._origins = newOrigins;
+  }
   @Output() filterEvent = new EventEmitter<LogFilter>();
   availableLevels = ['info', 'error', 'warn'];
 
-  filters!: FormGroup;
+  filters!: FormGroup<{
+    levels: FormRecord<FormControl<boolean | null>>;
+    origins: FormRecord<FormControl<boolean | null>>;
+  }>;
+
+  get filterOrigins() {
+    return Object.keys(this.filters.value.origins ?? {});
+  }
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.filters = this.formBuilder.group({
-      levels: this.formBuilder.group(
-        this.availableLevels.reduce((map, level) => {
+    this.filters = this.buildFiltersForm(this.availableLevels, this._origins);
+  }
+
+  private buildFiltersForm(levels: string[], origins: string[]) {
+    return this.formBuilder.group({
+      levels: this.formBuilder.record(
+        levels.reduce((map, level) => {
           map[level] = [false];
           return map;
         }, {} as Record<string, boolean[]>)
       ),
-      origins: this.formBuilder.group(
-        this.origins.reduce((map, origin) => {
+      origins: this.formBuilder.record(
+        origins.reduce((map, origin) => {
           map[origin] = [false];
           return map;
         }, {} as Record<string, boolean[]>)

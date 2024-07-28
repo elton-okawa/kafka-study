@@ -13,7 +13,7 @@
   </div>
   <div formGroupName="origins">
     <p>Consumers</p>
-    <div *ngFor="let origin of origins; let i = index">
+    <div *ngFor="let origin of filterOrigins; let i = index">
       <input
         id="origin-{{ origin }}"
         type="checkbox"
