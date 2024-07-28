@@ -1,7 +1,2 @@
 <app-add-consumer-button />
-<div class="consumer">
-  <p>{{ consumer.name }}</p>
-  <button [disabled]="!consumer.active || loading" (click)="onStop()">
-    Stop
-  </button>
-</div>
+<app-consumer-item *ngFor="let consumer of consumers" [consumer]="consumer" />
