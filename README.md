@@ -42,9 +42,10 @@ Start kafka docker:
 
 ```bash
 cd api && sudo docker compose up -d
+cd ..
 ```
 
-Wait some seconds after container boot up and create our topic
+Wait some seconds after container boot up and create our topic.
 
 Start both frontend and api:
 
