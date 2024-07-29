@@ -16,6 +16,7 @@ async function start() {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       logInfoInParent(`[partition-${partition}] ${message.value?.toString()}`);
     },
   });

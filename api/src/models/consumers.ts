@@ -14,7 +14,7 @@ export class Consumers {
       ),
       logs: Array.from(this._refs.values())
         .flatMap((consumer) => consumer.logs)
-        .sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)),
+        .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp)),
     };
   }
 

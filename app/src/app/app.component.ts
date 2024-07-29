@@ -7,6 +7,7 @@ import { FilterComponent, LogFilter } from './filter/filter.component';
 import { ConsumersData, Log } from '../api/models';
 import { ConsumerComponent } from './consumer/consumer.component';
 import { MessageComponent } from './message/message.component';
+import { LogComponent } from './log/log.component';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { MessageComponent } from './message/message.component';
     FilterComponent,
     ConsumerComponent,
     MessageComponent,
+    LogComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

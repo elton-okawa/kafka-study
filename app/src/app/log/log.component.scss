@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 0px;
+  gap: 12px;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.container:hover {
+  background-color: #f3f4f6;
+}
+
+.origin {
+  width: 100px;
+  text-align: center;
+}
+
+.severity-indicator {
+  border-left: 3px solid;
+}
+
+.severity-info {
+  border-color: #0ea5e9;
+}
+
+.severity-warn {
+  border-color: #fbbf24;
+}
+
+.severity-error {
+  border-color: #dc2626;
+}

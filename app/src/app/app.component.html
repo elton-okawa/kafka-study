@@ -8,8 +8,6 @@
     />
   </section>
   <section name="logs" class="logs">
-    <div *ngFor="let log of filterLogs(consumers.data.logs)">
-      <p>{{ log | json }}</p>
-    </div>
+    <app-log *ngFor="let log of filterLogs(consumers.data.logs)" [log]="log" />
   </section>
 </main>
