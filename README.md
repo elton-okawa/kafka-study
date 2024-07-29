@@ -21,11 +21,12 @@ When a message's key is not defined, they'll be distributed between partitions i
 ### Defining message's key
 
 Defining message's key ensures that those messages will be delivered to the same partition and consumed in the same arrival order.
+
 It's useful when order matters, for example, in a bank account application you can use client's id as message key to ensure that every message from this specific client will be processed in order.
 
 ### Consumers > Partitions (not in demo video yet)
 
-Whenever we have more consumers than partitions, extra consumers will be idle because kafka guarantees that each partition one have a single consumer, but a single consumer can consume from more than one partition.
+Whenever we have more consumers than partitions, extra consumers will be idle because kafka guarantees that each partition only have a single consumer, but remember that a single consumer can consume from more than one partition.
 
 ## Quick start
 
