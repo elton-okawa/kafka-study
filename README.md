@@ -1,5 +1,7 @@
 # Kafka Study
 
+[output-webm.webm](https://github.com/user-attachments/assets/f26affeb-da4b-43d0-b3ea-924f66a43473)
+
 ## Overview
 
 The initial setup starts with a kafka topic with 4 partitions and one consumer.
@@ -14,7 +16,7 @@ Every time a new consumer joins or leaves, a rebalance is triggered
 
 ### Not defining message's key
 
-When a message's key is not defined, they'll be distributed by default in a round robin manner
+When a message's key is not defined, they'll be distributed between partitions in a round robin manner by default.
 
 ### Defining message's key
 
@@ -23,7 +25,7 @@ It's useful when order matters, for example, in a bank account application you c
 
 ### Consumers > Partitions (not in demo video yet)
 
-Whenever we have more consumers than partitions, extra consumers will be idle because kafka guarantees that each partition one have a single consumer.
+Whenever we have more consumers than partitions, extra consumers will be idle because kafka guarantees that each partition one have a single consumer, but a single consumer can consume from more than one partition.
 
 ## Quick start
 
@@ -49,3 +51,5 @@ Start both frontend and api:
 ```bash
 npm run start
 ```
+
+Visit: http://localhost:4200/
