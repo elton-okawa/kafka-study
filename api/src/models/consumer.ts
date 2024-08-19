@@ -1,8 +1,8 @@
 import { Worker } from 'worker_threads';
-import { Commands } from '../helpers/commands';
 import { FastifyBaseLogger } from 'fastify';
 import { EventEmitter } from 'stream';
 import { Log } from './log';
+import { Commands } from './command';
 
 let counter = 0;
 
@@ -36,7 +36,7 @@ export class Consumer {
 
   constructor(private _logger: FastifyBaseLogger) {
     this._emitter = new EventEmitter();
-    this._worker = new Worker(process.cwd() + '/src/consumer.ts', {
+    this._worker = new Worker(process.cwd() + '/src/consumer-worker.ts', {
       workerData: { topic: process.env.TOPIC_NAME },
     });
     this._name = `consumer-${counter++}`;
@@ -90,5 +90,12 @@ export class Consumer {
     this._isActive = false;
 
     this._emitter.emit(Consumer.UPDATED_EVENT);
+  }
+
+  simulateError(simulate: boolean) {
+    this._worker.postMessage({
+      type: Commands.SimulateError,
+      payload: simulate,
+    });
   }
 }

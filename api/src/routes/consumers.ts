@@ -37,7 +37,7 @@ export function setupConsumersApi(fastify: FastifyInstance) {
   );
 
   fastify.put<{ Params: { name: string }; Body: { active: boolean } }>(
-    '/consumers/:name',
+    '/consumers/:name/active',
     async (request, reply) => {
       const name = request.params.name;
       if (!consumers.has(name)) {
@@ -51,6 +51,21 @@ export function setupConsumersApi(fastify: FastifyInstance) {
       }
       // TODO handle active true
 
+      reply.status(204).send();
+    },
+  );
+
+  fastify.put<{ Params: { name: string }; Body: { simulate: boolean } }>(
+    '/consumers/:name/simulate-error',
+    async (request, reply) => {
+      const name = request.params.name;
+      if (!consumers.has(name)) {
+        return reply
+          .status(404)
+          .send({ message: `Consumer '${name}' not found` });
+      }
+
+      consumers.get(name)?.simulateError(request.body.simulate);
       reply.status(204).send();
     },
   );

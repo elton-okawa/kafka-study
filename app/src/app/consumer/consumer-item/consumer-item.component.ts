@@ -1,4 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  Input,
+  signal,
+} from '@angular/core';
 import { ConsumerStatus } from '../../../api/models';
 import { ConsumerService } from '../consumer.service';
 
@@ -10,15 +17,39 @@ import { ConsumerService } from '../consumer.service';
   styleUrl: './consumer-item.component.scss',
 })
 export class ConsumerItemComponent {
-  @Input() consumer!: ConsumerStatus;
-  loading = false;
+  consumerStatus = input.required<ConsumerStatus>();
+  loading = signal(false);
 
-  constructor(private service: ConsumerService) {}
+  private service = inject(ConsumerService);
+  private destroyRef = inject(DestroyRef);
 
   onStop() {
-    this.loading = true;
-    return this.service.stop(this.consumer.name).subscribe(() => {
-      this.loading = false;
+    this.loading.set(true);
+    const subscription = this.service
+      .stop(this.consumerStatus().name)
+      .subscribe(() => {
+        this.loading.set(false);
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+  }
+
+  onToggleSimulatedError(event: Event) {
+    const subscription = this.service
+      .simulateError(
+        this.consumerStatus().name,
+        (event.target as HTMLInputElement).checked
+      )
+      .subscribe({
+        complete: () => {
+          this.loading.set(false);
+        },
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
     });
   }
 }

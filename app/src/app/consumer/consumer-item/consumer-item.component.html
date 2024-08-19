@@ -1,7 +1,8 @@
 <div class="container">
-  <p>{{ consumer.name }}</p>
+  <p>{{ consumerStatus().name }}</p>
+  <input type="checkbox" (change)="onToggleSimulatedError($event)" />
   <button
-    [disabled]="!consumer.active || loading"
+    [disabled]="!consumerStatus().active || loading()"
     (click)="onStop()"
     class="button button-outline-error"
   >

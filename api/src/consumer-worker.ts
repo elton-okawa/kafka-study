@@ -1,12 +1,14 @@
 import { parentPort, workerData } from 'worker_threads';
 import { getKafkaInstance } from './helpers/kafka';
-import { Commands } from './helpers/commands';
 import { Log } from './models/log';
+import { Command, Commands } from './models/command';
 
 const kafka = getKafkaInstance(logInParent);
 const consumer = kafka.consumer({
   groupId: 'kafka-study-group',
 });
+
+let simulateError = false;
 
 async function start() {
   const { topic } = workerData;
@@ -17,6 +19,10 @@ async function start() {
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (simulateError) {
+        throw new Error('Simulated error');
+      }
+
       logInfoInParent(`[partition-${partition}] ${message.value?.toString()}`);
     },
   });
@@ -42,9 +48,16 @@ async function gracefulShutdown() {
   process.exit();
 }
 
-parentPort?.on('message', async (message) => {
-  if (message.type === Commands.Terminate) {
-    await gracefulShutdown();
+parentPort?.on('message', async (command: Command) => {
+  switch (command.type) {
+    case Commands.Terminate:
+      await gracefulShutdown();
+      break;
+    case Commands.SimulateError:
+      simulateError = command.payload;
+      break;
+    default:
+      throw new Error(`Missing command handler`);
   }
 });
 
