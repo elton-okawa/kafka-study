@@ -1,6 +1,10 @@
 <div class="container">
   <p>{{ consumerStatus().name }}</p>
-  <input type="checkbox" (change)="onToggleSimulatedError($event)" />
+  <input
+    type="checkbox"
+    [checked]="consumerStatus().simulateError"
+    (change)="onToggleSimulatedError($event)"
+  />
   <button
     [disabled]="!consumerStatus().active || loading()"
     (click)="onStop()"

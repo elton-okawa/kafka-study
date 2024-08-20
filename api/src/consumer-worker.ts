@@ -18,12 +18,17 @@ async function start() {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
+      logInfoInParent(
+        `[partition-${partition}] [offset-${message.offset}-start] ${message.value?.toString()}`,
+      );
       await new Promise((resolve) => setTimeout(resolve, 2000));
       if (simulateError) {
         throw new Error('Simulated error');
       }
 
-      logInfoInParent(`[partition-${partition}] ${message.value?.toString()}`);
+      logInfoInParent(
+        `[partition-${partition}] [offset-${message.offset}-end] ${message.value?.toString()}`,
+      );
     },
   });
 }

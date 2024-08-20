@@ -8,11 +8,12 @@ import {
 } from '@angular/core';
 import { ConsumerStatus } from '../../../api/models';
 import { ConsumerService } from '../consumer.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-consumer-item',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './consumer-item.component.html',
   styleUrl: './consumer-item.component.scss',
 })
@@ -37,11 +38,10 @@ export class ConsumerItemComponent {
   }
 
   onToggleSimulatedError(event: Event) {
+    const simulateError = (event.target as HTMLInputElement).checked;
+
     const subscription = this.service
-      .simulateError(
-        this.consumerStatus().name,
-        (event.target as HTMLInputElement).checked
-      )
+      .simulateError(this.consumerStatus().name, simulateError)
       .subscribe({
         complete: () => {
           this.loading.set(false);

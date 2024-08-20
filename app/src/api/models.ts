@@ -7,6 +7,7 @@ export enum LogLevel {
 export type ConsumerStatus = {
   name: string;
   active: boolean;
+  simulateError: boolean;
 };
 
 export type ConsumersData = {

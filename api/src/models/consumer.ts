@@ -13,7 +13,8 @@ export class Consumer {
   private _logs: Log[] = [];
   private _name: string;
   private _emitter: EventEmitter;
-  private _isActive: boolean;
+  private _isActive = false;
+  private _simulateError = false;
 
   get name() {
     return this._name;
@@ -23,6 +24,7 @@ export class Consumer {
     return {
       name: this._name,
       active: this._isActive,
+      simulateError: this._simulateError,
     };
   }
 
@@ -97,5 +99,8 @@ export class Consumer {
       type: Commands.SimulateError,
       payload: simulate,
     });
+    this._simulateError = simulate;
+
+    this._emitter.emit(Consumer.UPDATED_EVENT);
   }
 }
