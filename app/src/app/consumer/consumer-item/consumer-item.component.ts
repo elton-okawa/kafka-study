@@ -11,7 +11,7 @@ import { ConsumerService } from '../consumer.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-consumer-item',
+  selector: 'tr[appConsumerItem]',
   standalone: true,
   imports: [FormsModule],
   templateUrl: './consumer-item.component.html',
