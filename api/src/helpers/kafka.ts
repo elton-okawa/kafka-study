@@ -5,7 +5,7 @@ import { Log } from '../models/log';
 export function getKafkaInstance(logger: (message: Log) => void) {
   return new Kafka({
     clientId: `kafka-study-${randomUUID()}`,
-    brokers: ['localhost:9094'],
+    brokers: process.env.KAFKA_BROKERS?.split(',') ?? [],
     logCreator:
       (logLevel) =>
       ({ namespace, level, label, log }) => {
