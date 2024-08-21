@@ -8,6 +8,7 @@ import { ConsumersData, Log } from '../api/models';
 import { ConsumerComponent } from './consumer/consumer.component';
 import { MessageComponent } from './message/message.component';
 import { LogComponent } from './log/log.component';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,7 @@ export class AppComponent implements OnDestroy {
   };
 
   constructor(private appService: AppService) {
-    const url = 'http://localhost:3000/listen';
+    const url = `${environment.apiBaseUrl}/listen`;
     const eventNames = ['consumers'];
 
     this.consumers$ = this.appService
