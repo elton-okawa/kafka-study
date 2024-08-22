@@ -16,7 +16,6 @@ Every time a new consumer joins or leaves, a rebalance is triggered
 
 [rebalancing.mp4](https://github.com/user-attachments/assets/507dac23-73d3-418f-90c1-43c9e3f5145f)
 
-
 ### Not defining message's key
 
 When a message's key is not defined, they'll be distributed between partitions in a round robin manner by default.
@@ -27,9 +26,13 @@ Defining message's key ensures that those messages will be delivered to the same
 
 It's useful when order matters, for example, in a bank account application you can use client's id as message key to ensure that every message from this specific client will be processed in order.
 
-### Consumers > Partitions (not in demo video yet)
+### Consumers > Partitions
 
 Whenever we have more consumers than partitions, extra consumers will be idle because kafka guarantees that each partition only have a single consumer, but remember that a single consumer can consume from more than one partition.
+
+### Error while consuming message
+
+When consumer keeps throwing error when consuming a message, the message won't be consumed, consequently queue size will increase until we solve this problem.
 
 ## Quick start
 
