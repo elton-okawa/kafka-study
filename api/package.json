@@ -4,15 +4,19 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "dotenvx run -- tsnd --respawn --watch=src src/index.ts"
+    "start": "dotenvx run -- tsnd --respawn --watch=src src/index.ts",
+    "build": "rimraf build && tsc && tsc-alias",
+    "start:prd": "node dist/index"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.14.12",
     "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.5.4"
   },
   "dependencies": {

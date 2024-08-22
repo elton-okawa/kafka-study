@@ -8,7 +8,13 @@ export class ConsumerService {
   constructor(private readonly http: HttpClient) {}
 
   stop(name: string) {
-    return this.http.put(`/consumers/${name}`, { active: false });
+    return this.http.put(`/consumers/${name}/active`, { active: false });
+  }
+
+  simulateError(name: string, simulateError: boolean) {
+    return this.http.put(`/consumers/${name}/simulate-error`, {
+      simulateError,
+    });
   }
 
   add() {

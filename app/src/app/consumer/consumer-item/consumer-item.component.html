@@ -1,10 +1,19 @@
-<div class="container">
-  <p>{{ consumer.name }}</p>
+<td>
+  <p>{{ consumerStatus().name }}</p>
+</td>
+<td>
+  <input
+    type="checkbox"
+    [checked]="consumerStatus().simulateError"
+    (change)="onToggleSimulatedError($event)"
+  />
+</td>
+<td>
   <button
-    [disabled]="!consumer.active || loading"
+    [disabled]="!consumerStatus().active || loading()"
     (click)="onStop()"
     class="button button-outline-error"
   >
     Stop
   </button>
-</div>
+</td>

@@ -1,8 +1,9 @@
 import { Worker } from 'worker_threads';
-import { Commands } from '../helpers/commands';
 import { FastifyBaseLogger } from 'fastify';
 import { EventEmitter } from 'stream';
 import { Log } from './log';
+import { Commands } from './command';
+import { join } from 'path';
 
 let counter = 0;
 
@@ -13,7 +14,8 @@ export class Consumer {
   private _logs: Log[] = [];
   private _name: string;
   private _emitter: EventEmitter;
-  private _isActive: boolean;
+  private _isActive = false;
+  private _simulateError = false;
 
   get name() {
     return this._name;
@@ -23,6 +25,7 @@ export class Consumer {
     return {
       name: this._name,
       active: this._isActive,
+      simulateError: this._simulateError,
     };
   }
 
@@ -36,7 +39,7 @@ export class Consumer {
 
   constructor(private _logger: FastifyBaseLogger) {
     this._emitter = new EventEmitter();
-    this._worker = new Worker(process.cwd() + '/src/consumer.ts', {
+    this._worker = new Worker(join(__dirname, '..', 'consumer-worker'), {
       workerData: { topic: process.env.TOPIC_NAME },
     });
     this._name = `consumer-${counter++}`;
@@ -88,6 +91,16 @@ export class Consumer {
   close() {
     this._worker.postMessage({ type: Commands.Terminate });
     this._isActive = false;
+
+    this._emitter.emit(Consumer.UPDATED_EVENT);
+  }
+
+  simulateError(simulate: boolean) {
+    this._worker.postMessage({
+      type: Commands.SimulateError,
+      payload: simulate,
+    });
+    this._simulateError = simulate;
 
     this._emitter.emit(Consumer.UPDATED_EVENT);
   }

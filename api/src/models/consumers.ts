@@ -30,6 +30,10 @@ export class Consumers {
     return this._refs.set(name, consumer);
   }
 
+  get(name: string) {
+    return this._refs.get(name);
+  }
+
   stop(name: string) {
     const consumer = this._refs.get(name);
 

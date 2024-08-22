@@ -5,6 +5,7 @@ import { setupAdminApis } from './routes/admin';
 import { FastifySSEPlugin } from 'fastify-sse-v2';
 import { setupServerSideEventsApi } from './routes/server-side-events';
 import cors from '@fastify/cors';
+import { setupHealthCheck } from './routes/healthcheck';
 
 const fastify = Fastify({
   logger: {
@@ -24,12 +25,13 @@ async function start() {
   await fastify.register(cors);
 
   setupConsumersApi(fastify);
+  await setupHealthCheck(fastify);
   await setupMessagesApi(fastify);
   await setupAdminApis(fastify);
   await setupServerSideEventsApi(fastify);
 
   try {
-    await fastify.listen({ port: 3000 });
+    await fastify.listen({ port: 3000, host: '::' });
     startConsumer(fastify);
   } catch (err) {
     fastify.log.error(err);
