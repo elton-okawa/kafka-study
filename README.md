@@ -30,6 +30,12 @@ Whenever we have more consumers than partitions, extra consumers will be idle be
 
 ## Quick start
 
+```
+docker compose up
+```
+
+## Development
+
 Install dependencies:
 
 ```bash
@@ -42,8 +48,7 @@ cd ..
 Start kafka docker:
 
 ```bash
-cd api && sudo docker compose up -d
-cd ..
+docker compose up -d kafka
 ```
 
 Wait some seconds after container boot up and create our topic.
