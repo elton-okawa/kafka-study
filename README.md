@@ -14,6 +14,9 @@ Every log will be shown in frontend and also on terminal.
 
 Every time a new consumer joins or leaves, a rebalance is triggered
 
+[rebalancing.mp4](https://github.com/user-attachments/assets/507dac23-73d3-418f-90c1-43c9e3f5145f)
+
+
 ### Not defining message's key
 
 When a message's key is not defined, they'll be distributed between partitions in a round robin manner by default.
