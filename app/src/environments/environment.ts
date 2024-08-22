@@ -1,3 +1,3 @@
 export const environment = {
-  apiBaseUrl: 'kafka-study-api:3000',
+  apiBaseUrl: 'http://localhost:3000',
 };

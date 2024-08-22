@@ -3,6 +3,7 @@ import { FastifyBaseLogger } from 'fastify';
 import { EventEmitter } from 'stream';
 import { Log } from './log';
 import { Commands } from './command';
+import { join } from 'path';
 
 let counter = 0;
 
@@ -38,7 +39,7 @@ export class Consumer {
 
   constructor(private _logger: FastifyBaseLogger) {
     this._emitter = new EventEmitter();
-    this._worker = new Worker(process.cwd() + '/src/consumer-worker.ts', {
+    this._worker = new Worker(join(__dirname, '..', 'consumer-worker'), {
       workerData: { topic: process.env.TOPIC_NAME },
     });
     this._name = `consumer-${counter++}`;
